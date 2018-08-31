@@ -5,7 +5,7 @@ makecode ScrollText package for micro:bit, it may show a scroll text in four dir
 Author: shaoziyang  
 Date:   2018.Octo  
 
-![](https://raw.githubusercontent.com/microbit-makecode-packages/ScrollText/master/icon.png)  
+![](https://github.com/microbit-makecode-packages/ScrollText/blob/master/docs/static/libs/tropic.png?raw=true)  
   
 
 ## usage
