@@ -1,14 +1,30 @@
 /**
  * microbit makecode Package: Scroll Text.
+ * Author: shao ziyang, 2018.Sept
  * From microbit/micropython Chinese community.
  * http://www.micropython.org.cn
  */
 
 enum SCROLL_DIR {
+    //% block="LEFT"
     LEFT,
+    //% block="UP"
     UP,
+    //% block="RIGHT"
     RIGHT,
+    //% block="DOWN"
     DOWN
+}
+
+enum SCROLL_ROTATE {
+    //% block="0"
+    SR_0,
+    //% block="90"
+    SR_90,
+    //% block="180"
+    SR_180,
+    //% block="270"
+    SR_270
 }
 
 //% weight=100 color=#Ffbc11 icon="T" block="ScrollText"
@@ -66,7 +82,7 @@ namespace ScrolText {
         [0x04, 0x06, 0x04, 0x04, 0x0E], //49: 1
         [0x07, 0x08, 0x06, 0x01, 0x0F], //50: 2
         [0x0F, 0x08, 0x04, 0x09, 0x06], //51: 3
-        [0x0C, 0x0A, 0x09, 0x1F, 0x08], //52: 4
+        [0x0C, 0x0A, 0x09, 0x0F, 0x08], //52: 4
         [0x1F, 0x01, 0x0F, 0x10, 0x0F], //53: 5
         [0x08, 0x04, 0x0E, 0x11, 0x0E], //54: 6
         [0x1F, 0x08, 0x04, 0x02, 0x01], //55: 7
@@ -152,7 +168,59 @@ namespace ScrolText {
     . . . . .
     `)
 
-    function DatToImg(dat: number[]): void {
+    function _Rotate(font: number[], rotate: SCROLL_ROTATE) {
+        let m: number[][] = [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0]
+        ]
+        let r: number[] = [font[0], font[1], font[2], font[3], font[4]]
+        switch (rotate) {
+            case SCROLL_ROTATE.SR_0:
+                return r;
+            case SCROLL_ROTATE.SR_90:
+                for (let i = 0; i < 5; i++) {
+                    m[4 - i][0] = (r[i] & 0x01)
+                    m[4 - i][1] = (r[i] & 0x02)
+                    m[4 - i][2] = (r[i] & 0x04)
+                    m[4 - i][3] = (r[i] & 0x08)
+                    m[4 - i][4] = (r[i] & 0x10)
+                }
+                break;
+            case SCROLL_ROTATE.SR_180:
+                for (let i = 0; i < 5; i++) {
+                    m[4][4 - i] = (r[i] & 0x01)
+                    m[3][4 - i] = (r[i] & 0x02)
+                    m[2][4 - i] = (r[i] & 0x04)
+                    m[1][4 - i] = (r[i] & 0x08)
+                    m[0][4 - i] = (r[i] & 0x10)
+                }
+                break;
+            case SCROLL_ROTATE.SR_270:
+                for (let i = 0; i < 5; i++) {
+                    m[i][4] = (r[i] & 0x01)
+                    m[i][3] = (r[i] & 0x02)
+                    m[i][2] = (r[i] & 0x04)
+                    m[i][1] = (r[i] & 0x08)
+                    m[i][0] = (r[i] & 0x10)
+                }
+                break;
+        }
+        for (let n = 0; n <= 4; n++) {
+            let d = 0
+            if (m[0][n]) d |= 1
+            if (m[1][n]) d |= 2
+            if (m[2][n]) d |= 4
+            if (m[3][n]) d |= 8
+            if (m[4][n]) d |= 16
+            r[n] = d
+        }
+        return r
+    }
+
+    function _ToImg(dat: number[]): void {
         for (let i = 0; i < 5; i++) {
             img.setPixel(0, i, (dat[i] & 0x01) == 0x01)
             img.setPixel(1, i, (dat[i] & 0x02) == 0x02)
@@ -166,58 +234,58 @@ namespace ScrolText {
      * show a scroll string
      * @param s     , eg: "Hello"
      * @param dir ,   eg: SCROLL_DIR.LEFT
+     * @param rotate, eg: SCROLL_ROTATE
      * @param delay , eg: 100
      */
-    //% blockId="SCROLL_SHOWSTRING" block="scroll string %s|dir %dir|delay %delay"
+    //% blockId="SCROLL_SHOWSTRING" block="scroll string %s|dir %dir|rotate %rotate|delay %delay"
     //% weight=100 blockGap=8
-    export function showString(s: string, dir: SCROLL_DIR, delay: number): void {
+    export function showString(s: string, dir: SCROLL_DIR, rotate: SCROLL_ROTATE, delay: number): void {
         let L = s.length + 1
-        let a = FONTS[0]
-        let b = FONTS[0]
+        let a: number[] = [0, 0, 0, 0, 0]
+        let b: number[] = [0, 0, 0, 0, 0]
 
-        if (s == '')
-            return
+        if (s == '') return
 
         s = ' ' + s + ' '
 
         switch (dir) {
             case SCROLL_DIR.LEFT:
                 for (let i = 0; i < L; i++) {
-                    a = FONTS[s.charCodeAt(i)]
-                    b = FONTS[s.charCodeAt(i + 1)]
+                    a = _Rotate(FONTS[s.charCodeAt(i)], rotate)
+                    b = _Rotate(FONTS[s.charCodeAt(i + 1)], rotate)
                     let c: number[] = [0, 0, 0, 0, 0]
                     for (let j = 0; j < 5; j++) {
                         for (let k = 0; k < 5; k++)
                             c[k] = (a[k] >> j) | ((b[k] << (8 - j)) >> 3)
-                        DatToImg(c)
+                        _ToImg(c)
                         img.showImage(0, delay)
                     }
                 }
                 break;
             case SCROLL_DIR.RIGHT:
                 for (let i = 0; i < L; i++) {
-                    a = FONTS[s.charCodeAt(i)]
-                    b = FONTS[s.charCodeAt(i + 1)]
+                    a = _Rotate(FONTS[s.charCodeAt(i)], rotate)
+                    b = _Rotate(FONTS[s.charCodeAt(i + 1)], rotate)
                     let c: number[] = [0, 0, 0, 0, 0]
                     for (let j = 0; j < 5; j++) {
                         for (let k = 0; k < 5; k++)
                             c[k] = (a[k] << j) | ((b[k] >> (5 - j)))
-                        DatToImg(c)
+                        _ToImg(c)
                         img.showImage(0, delay)
                     }
                 }
                 break;
             case SCROLL_DIR.UP:
                 for (let i = 0; i < L; i++) {
-                    a = FONTS[s.charCodeAt(i)]
-                    b = FONTS[s.charCodeAt(i + 1)]
+                    a = _Rotate(FONTS[s.charCodeAt(i)], rotate)
+                    b = _Rotate(FONTS[s.charCodeAt(i + 1)], rotate)
                     let c: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                     for (let j = 0; j < 5; j++) {
                         c[j] = a[j]
                         c[j + 6] = b[j]
                     }
                     for (let j = 0; j < 6; j++) {
-                        DatToImg(c)
+                        _ToImg(c)
                         img.showImage(0, delay)
                         c.removeAt(0)
                     }
@@ -225,15 +293,15 @@ namespace ScrolText {
                 break;
             case SCROLL_DIR.DOWN:
                 for (let i = 0; i < L; i++) {
-                    a = FONTS[s.charCodeAt(i)]
-                    b = FONTS[s.charCodeAt(i + 1)]
+                    a = _Rotate(FONTS[s.charCodeAt(i)], rotate)
+                    b = _Rotate(FONTS[s.charCodeAt(i + 1)], rotate)
                     let c: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
                     for (let j = 0; j < 5; j++) {
                         c[j] = a[j]
                         c[j + 6] = b[j]
                     }
                     for (let j = 0; j < 6; j++) {
-                        DatToImg(c)
+                        _ToImg(c)
                         img.showImage(0, delay)
                         for (let k = 5; k > 0; k--) {
                             c[k] = c[k - 1]
@@ -249,11 +317,12 @@ namespace ScrolText {
       * show a scroll number
       * @param n     , eg: 123
       * @param dir ,   eg: SCROLL_DIR.LEFT
+      * @param rotate, eg: SCROLL_ROTATE
       * @param delay , eg: 100
       */
-    //% blockId="SCROLL_SHOWNUMBER" block="scroll number %n|dir %dir|delay %delay"
+    //% blockId="SCROLL_SHOWNUMBER" block="scroll number %n|dir %dir|rotate %rotate|delay %delay"
     //% weight=100 blockGap=8
-    export function showNumber(n: number, dir: SCROLL_DIR, delay: number): void {
-        showString(n.toString(), dir, delay)
+    export function showNumber(n: number, dir: SCROLL_DIR, rotate: SCROLL_ROTATE, delay: number): void {
+        showString(n.toString(), dir, rotate, delay)
     }
 }

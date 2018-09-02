@@ -3,7 +3,7 @@
 makecode ScrollText package for micro:bit, it may show a scroll text in four direction with custom speed. 
 
 Author: shaoziyang  
-Date:   2018.Octo  
+Date:   2018.Sept  
 
 ![](https://github.com/microbit-makecode-packages/ScrollText/blob/master/docs/static/libs/tropic.png?raw=true)  
   
@@ -19,16 +19,18 @@ to search box then search.
 
 ## API
 
-- **showString(s: string, dir: SCROLL_DIR, delay: number)**  
+- **showString(s: string, dir: SCROLL_DIR, rotate: SCROLL_ROTATE, delay: number)**  
 show a scroll string  
 s: string
-dir: scroll direction  
+dir: scroll direction
+rotate: display rotation  
 delay: display speed
 
-- **showNumber(n: number, dir: SCROLL_DIR, delay: number)**  
+- **showNumber(n: number, dir: SCROLL_DIR, rotate: SCROLL_ROTATE, delay: number)**  
 show a scroll number  
 n: number
 dir: scroll direction  
+rotate: display rotation  
 delay: display speed
 
 ## Demo
@@ -36,6 +38,8 @@ delay: display speed
 ![](https://raw.githubusercontent.com/microbit-makecode-packages/ScrollText/master/demo.png)  
 
 ![](https://raw.githubusercontent.com/microbit-makecode-packages/ScrollText/master/demo.gif)  
+
+![](https://raw.githubusercontent.com/microbit-makecode-packages/ScrollText/master/demo2.gif)  
 
 ## License
 
