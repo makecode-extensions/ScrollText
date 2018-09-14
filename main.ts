@@ -232,10 +232,10 @@ namespace ScrolText {
 
     /**
      * show a scroll string
-     * @param s     , eg: "Hello"
-     * @param dir ,   eg: SCROLL_DIR.LEFT
-     * @param rotate, eg: SCROLL_ROTATE
-     * @param delay , eg: 100
+     * @param s      , eg: "Hello"
+     * @param dir    , eg: SCROLL_DIR.LEFT
+     * @param rotate , eg: SCROLL_ROTATE.SR_0
+     * @param delay  , eg: 100
      */
     //% blockId="SCROLL_SHOWSTRING" block="scroll string %s|dir %dir|rotate %rotate|delay %delay"
     //% weight=100 blockGap=8
@@ -315,10 +315,10 @@ namespace ScrolText {
 
     /**
       * show a scroll number
-      * @param n     , eg: 123
-      * @param dir ,   eg: SCROLL_DIR.LEFT
-      * @param rotate, eg: SCROLL_ROTATE
-      * @param delay , eg: 100
+      * @param n      , eg: 123
+      * @param dir    , eg: SCROLL_DIR.LEFT
+      * @param rotate , eg: SCROLL_ROTATE.SR_90
+      * @param delay  , eg: 100
       */
     //% blockId="SCROLL_SHOWNUMBER" block="scroll number %n|dir %dir|rotate %rotate|delay %delay"
     //% weight=100 blockGap=8
