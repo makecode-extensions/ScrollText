@@ -7,15 +7,24 @@ Date:   2018.Sept
 
 ![](https://github.com/microbit-makecode-packages/ScrollText/blob/master/docs/static/libs/tropic.png?raw=true)  
   
+## Add extension
 
-## usage
-
-open your microbit makecode project, in Add Package, paste  
+open your microbit makecode project, in Extension, paste  
 
 https://github.com/microbit-makecode-packages/ScrollText  
 
 to search box then search.
 
+## Basic usage
+
+```
+basic.forever(function () {
+    ScrolText.showString("Hello", SCROLL_DIR.LEFT, 100)
+    ScrolText.showString("Hello", SCROLL_DIR.UP, 100)
+    ScrolText.showString("Hello", SCROLL_DIR.RIGHT, 100)
+    ScrolText.showString("Hello", SCROLL_DIR.DOWN, 100)
+})
+```
 
 ## API
 
