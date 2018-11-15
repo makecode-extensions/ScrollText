@@ -27,7 +27,7 @@ enum SCROLL_ROTATE {
     SR_270
 }
 
-//% weight=100 color=#Ffbc11 icon="T" block="ScrollText"
+//% weight=20 color=#Ffbc11 icon="T" block="ScrollText"
 namespace ScrolText {
     let FONTS = [
         [0x00, 0x00, 0x00, 0x00, 0x00], //0: 
