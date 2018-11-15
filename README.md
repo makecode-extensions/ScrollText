@@ -5,13 +5,13 @@ makecode ScrollText package for micro:bit, it may show a scroll text in four dir
 Author: shaoziyang  
 Date:   2018.Sept  
 
-![](https://github.com/microbit-makecode-packages/ScrollText/blob/master/docs/static/libs/tropic.png?raw=true)  
+![](docs/static/libs/tropic.png?raw=true)  
   
 ## Add extension
 
 open your microbit makecode project, in Extension, paste  
 
-https://github.com/microbit-makecode-packages/ScrollText  
+https://github.com/makecode-packages/ScrollText  
 
 to search box then search.
 
@@ -44,11 +44,11 @@ delay: display speed
 
 ## Demo
 
-![](https://raw.githubusercontent.com/microbit-makecode-packages/ScrollText/master/demo.png)  
+![](demo.png)  
 
-![](https://raw.githubusercontent.com/microbit-makecode-packages/ScrollText/master/demo.gif)  
+![](demo.gif)  
 
-![](https://raw.githubusercontent.com/microbit-makecode-packages/ScrollText/master/demo2.gif)  
+![](demo2.gif)  
 
 ## License
 
