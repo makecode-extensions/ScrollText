@@ -11,7 +11,7 @@ Date:   2018.Sept
 
 open your microbit makecode project, in Extension, paste  
 
-https://github.com/makecode-packages/ScrollText  
+https://github.com/makecode-extensions/ScrollText  
 
 to search box then search.
 
@@ -61,4 +61,4 @@ Copyright (c) 2018, microbit/micropython Chinese community
 * for PXT/microbit
 
 
-[From microbit/micropython Chinese community](http://www.micropython.org.cn)
+[From microbit/micropython Chinese community](https://www.micropython.org.cn)
